@@ -1,0 +1,42 @@
+.eXcontainer{
+    display: grid;
+    background-color:seagreen;
+    min-height: 100vh;
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+    grid-template-rows: 0.2fr 1.4fr 0.5fr;
+}
+
+.header{
+    grid-column: 1 /4;
+    grid-row: 1 / 1;
+    background-color: gray;
+    display: flex;
+    flex-direction: row;
+}
+.body{
+    grid-column: 1/4;
+    grid-row: 2/2;
+    background-color: antiquewhite;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+.footer{
+    grid-column: 1/4;
+    grid-row: 3/3;
+    background-color: gray;
+}
+.qContainer{
+    background-color: gray;
+    height:100%;
+    width: 40%;
+}
+
+.paginationWidth{
+    width: 650px;
+}
+
+.pgBtnSpacing{
+    margin: 0.5px;
+}
