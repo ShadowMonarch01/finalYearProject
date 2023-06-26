@@ -80,7 +80,10 @@ const Home = () => {
       Hello world!
     </h1>
 
-        <CountdownTimer timeLimit={60} onTimeExpired={handleTimeExpired} />
+        <CountdownTimer 
+          timeLimit={60} 
+          onTimeExpired={handleTimeExpired} 
+        />
         <form id='news' className='testForm' onSubmit={(event) => event.preventDefault()}>
             <div className="form-control">
               <label>Email</label>

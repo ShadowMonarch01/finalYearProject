@@ -10,7 +10,7 @@ const NavPage = () => {
     <div>
         <Routes>
             <Route path='/' element={<Dashboard/>}/>
-            <Route path='/scripts' element={<Scripts/>}/>
+            <Route path='/scripts/*' element={<Scripts/>}/>
             <Route path='/settings' element={<Settings/>}/>
             <Route path='/upload' element={<Upload/>}/>
         </Routes>

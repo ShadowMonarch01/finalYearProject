@@ -1,8 +1,11 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import './Admin.css'
 import {BsBook} from 'react-icons/bs'
+import { AuthContext } from '../../theAuth/context'
 
 const Navbar = () => {
+
+  const {admDet} = useContext(AuthContext);
   return (
     <div className='navBarContainer'>
 
@@ -11,7 +14,7 @@ const Navbar = () => {
                 <BsBook className='barIcon'/>
             </div>
             <div>
-                <p className='barText'>Welcome Admin</p> 
+                <p className='barText'>Welcome {admDet?.name}</p> 
             </div>
         </div>
     </div>

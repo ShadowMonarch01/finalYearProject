@@ -1,9 +1,12 @@
-import React,{useState} from 'react'
+import React,{useState, useContext} from 'react'
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../theAuth/context';
 
 const ALogin = () => {
 
     const navigate = useNavigate()
+
+    const {setAdmDet} = useContext(AuthContext)
     const [state, setState] = useState({
         uname: "",
         psw: ""
@@ -16,6 +19,44 @@ const ALogin = () => {
         [name]: value
     }));
     };
+
+    const Authenticate = async() =>{
+
+        fetch('http://127.0.0.1:5000/admlogin', {
+            method: 'POST',
+            headers: {
+              //Header Defination
+              'Accept':'application/json',
+              'Content-Type':'application/json',
+            },
+            body: JSON.stringify({
+              "user_name": state.uname,
+              "user_psw": state.psw,
+            })
+          })
+          .then((response) => response.json())
+          .then((response) => {
+            
+            if (response.status === 'User Authenticated') {
+
+                setAdmDet(response.user_det)
+              // setResponse(response.status)
+            //   alert(response.status)
+            //   setState({cCode: "", cTitle: ""})
+            //   setQandN([])
+                navigateHome()
+              
+            } else {  
+              alert(response.status)
+              console.log(response.status)              
+            }
+          })
+          .catch((error) => {
+            alert(error)
+            console.error(error);
+            
+          });
+    }
 
     const navigateHome = () => {
         // 👇️ navigate to /
@@ -56,7 +97,7 @@ const ALogin = () => {
             </div>
 
             <div className='subDiv'>
-                <button className='lgBtn' type="submit" onClick={()=>navigateHome()}>Login</button>
+                <button className='lgBtn' type="submit" onClick={()=>Authenticate()}>Login</button>
             </div>
         </form>
     </div>

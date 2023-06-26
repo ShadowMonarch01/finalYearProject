@@ -1,6 +1,11 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext} from 'react';
+import { AuthContext } from '../theAuth/context';
+import { useDispatch } from 'react-redux';
+import { updateTimeLeft } from '../rtkSlices/stuexSlice';
 
 const CountdownTimer = ({ timeLimit, onTimeExpired }) => {
+  const dispatch = useDispatch()
+  const {setTimeLeft} = useContext(AuthContext)
   const [timeRemaining, setTimeRemaining] = useState(timeLimit);
   const [shouldAlert, setShouldAlert] = useState(true)
 
@@ -10,13 +15,19 @@ const CountdownTimer = ({ timeLimit, onTimeExpired }) => {
     let timerId
     if (timeRemaining > 0) {
       setShouldAlert(true)
-      timerId = setTimeout(() => {
-        setTimeRemaining((prevTimer) => prevTimer - 1);
+      timerId = setTimeout(async() => {
+        await setTimeLeft(0)
+        await setTimeLeft(timeRemaining-1)
+        await setTimeRemaining((prevTimer) => prevTimer - 1);
+        // setTimeLeft((prevTimer) => prevTimer - 1)
+        
       }, 1000);
     } else {
       if(shouldAlert){
         alert('Your Time is Up!')
       }
+      setTimeRemaining(timeRemaining)
+      dispatch(updateTimeLeft(timeRemaining))
       onTimeExpired();
       
       return
