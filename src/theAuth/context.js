@@ -8,12 +8,15 @@ export const AuthProvider = ({children}) =>{
     const [matNo, setMatNo] = useState('')
     const [admDet, setAdmDet] = useState({})
     const [stuScripts, setStuScripts] = useState([])
+    const [stuIdx, setStuIdx] = useState(0)
     // For Exam
     const [fetchedScript, setFetchedScript] = useState([])
     const [scriptCridentials, setScriptCridentials] = useState({course_title:'', course_code:''})
     const [exmLoggedIn, setExmLoggedIn] = useState(false)
-    const [timeLeft, setTimeLeft] = useState(0)
-    const [timeLeft1, setTimeLeft1] = useState(0)
+    const [timeLeft, setTimeLeft] = useState(5000)
+    const [timeLeft1, setTimeLeft1] = useState('')
+
+    const posts = React.useRef(null);
 
 
     return(
@@ -35,6 +38,8 @@ export const AuthProvider = ({children}) =>{
                 setScriptCridentials,
                 timeLeft, setTimeLeft,
                 timeLeft1, setTimeLeft1,
+                posts,
+                stuIdx, setStuIdx,
             }}
         >
             {children}

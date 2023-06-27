@@ -41,15 +41,16 @@ const Upload = () => {
     const chkName2 = (chkName.replace(".xlsx","")).split('_')
     const Ndata = utils.sheet_to_json(ws); // generate objects
     let tempArr = [...Ndata]
-    tempArr.forEach(function(element){ 
+    tempArr.forEach((element, index)=>{ 
       element.answer1 = ""
       element.autom = "f"
-      element.admm = "f"
+      element.admm = ""
+      element.serialIndex = index + 1
     }) // add a key property for students answer
     setQandN(tempArr)
     setState({cCode:chkName2[1], cTitle:chkName2[0]})
     console.log(tempArr);
-    console.log(`Tried getting sheet Name: ${chkName2}`)
+    console.log(`Tried getting sheet Name: ${state}`)
   }
 
   const getLecturers = async() =>{
@@ -181,6 +182,7 @@ const Upload = () => {
               />
               <br/>
               <Select
+                placeholder='Lecturer'
                 defaultValue={selectedOption}
                 onChange={(e)=>setSelectedOption(e)}
                 options={options}

@@ -26,6 +26,8 @@
     grid-column: 1/4;
     grid-row: 3/3;
     background-color: gray;
+    display: flex;
+    flex-direction: row;
 }
 .qContainer{
     background-color: gray;
@@ -35,6 +37,18 @@
 
 .paginationWidth{
     width: 650px;
+    background-color: forestgreen;
+}
+
+.paginationdim{
+    /* background-color: cadetblue; */
+    min-width: 38%;
+    /* width: 50%; */
+    /* min-height: 20px; */
+}
+
+.conHeight{
+    height: calc(100% - 2%);
 }
 
 .pgBtnSpacing{

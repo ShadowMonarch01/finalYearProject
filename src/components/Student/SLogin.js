@@ -34,53 +34,102 @@ const SLogin = () => {
     }));
     };
 
+    // Random number function
+    const randomStepper =(maxNr)=>{
+      let haveIt = []
+  
+      function generateUniqueRandom(maxNr) {
+          //Generate random number
+          let random = (Math.floor(Math.random() * maxNr) + 1).toFixed();
+  
+          //Coerce to number by boxing
+          random = Number(random);
+  
+          if(!haveIt.includes(random)) {
+              haveIt.push(random);
+              return random;
+          } else {
+              if(haveIt.length < maxNr ) {
+              //Recursively generate number
+              return  generateUniqueRandom(maxNr);
+              } else {
+              console.log('No more numbers available.')
+              return false;
+             }
+          }
+      }
+  
+      for(let i = 0; i<maxNr; i++){
+          generateUniqueRandom(maxNr)
+      }
+  
+      return haveIt;
+  }
+
     const fetchExamScripts =()=>{
-      dispatch(fetchExamQns(stuMatNo))
-        // fetch('http://127.0.0.1:5000/getquestions', {
-        //   method: 'POST',
-        //   headers: {
-        //     //Header Defination
-        //     'Accept':'application/json',
-        //     'Content-Type':'application/json',
-        //   },
-        //   body: JSON.stringify({
-        //     "mat_no": state.psw,
-        //   })
-        // })
-        // .then((response) => response.json())
-        // .then((response) => {
-        // if(response.status === 'Collection Successful!'){
-        //     setFetchedScript([...response.qns.qandn]);
-        //     setScriptCridentials({course_title:response.qns.course_title, course_code:response.qns.course_code})
-        //     setStudentName(state.uname)
-        //     setMatNo(state.psw)
-        //     setExmLoggedIn(true)
-        //     navigateHome()
-        // }
-        // else if(response.status === 'Collection loaded'){
-        //     setFetchedScript([...response.qns.qandn]);
-        //     setScriptCridentials({course_title:response.qns.course_title, course_code:response.qns.course_code})
-        //     setStudentName(response.qns.name)
-        //     setMatNo(response.qns.mat_no)
-        //     setTimeLeft(response.qns.timeLeft)
-        //     setExmLoggedIn(true)
-        //     navigateHome()
-        // }
-        // })
-        // .catch((error) => {
-        //         alert(error)
-        //         console.error(error);
-        //     });
+        fetch('http://127.0.0.1:5000/getquestions', {
+          method: 'POST',
+          headers: {
+            //Header Defination
+            'Accept':'application/json',
+            'Content-Type':'application/json',
+          },
+          body: JSON.stringify({
+            "mat_no": state.psw,
+          })
+        })
+        .then((response) => response.json())
+        .then((response) => {
+        if(response.status === 'Collection Successful!'){
+            
+            setScriptCridentials({course_title:response.qns.course_title, course_code:response.qns.course_code})
+            setStudentName(state.uname)
+            setMatNo(state.psw)
+            setExmLoggedIn(true)
+
+            // get random numbers for the questions
+            let randomArr = [...randomStepper(response.qns.qandn.length)]
+
+            //  create a temporaty array
+            let tempArrQuestions = [...response.qns.qandn]
+
+            //  map the questions to the random numbers
+            for(let i =0; i < tempArrQuestions.length; i++){
+                tempArrQuestions[i]["randq"] = randomArr[i]
+            }
+            // sort the array in order of the random number
+            tempArrQuestions.sort(function(a, b){
+                return a.randq - b.randq
+            })
+
+            setFetchedScript([...tempArrQuestions]);
+            
+            navigateHome()
+        }
+        else if(response.status === 'Collection loaded'){
+            setFetchedScript([...response.qns.qandn]);
+            setScriptCridentials({course_title:response.qns.course_title, course_code:response.qns.course_code})
+            setStudentName(response.qns.name)
+            setMatNo(response.qns.mat_no)
+            setTimeLeft(response.qns.timeLeft)
+            setExmLoggedIn(true)
+            navigateHome()
+        }
+        })
+        .catch((error) => {
+                alert(error)
+                console.error(error);
+            });
     }
 
     if(!loading && qns.length && loggedIn){
       navigate('/sexam');
     }
-    // const navigateHome = () => {
-    //     // 👇️ navigate to /
-    //     navigate('/sexam');
-    //     console.log(state)
-    //   };
+    const navigateHome = () => {
+        // 👇️ navigate to /
+        navigate('/sexam');
+        console.log(state)
+      };
 
   return (
     <div className='authpg'>
@@ -99,7 +148,7 @@ const SLogin = () => {
                  name="uname" 
                  value={state.uname}
                  onChange={(e)=>{
-                  dispatch(addName({name:e.target.value}))
+                  // dispatch(addName({name:e.target.value}))
                   handleInputChange(e)
                  }}
                  required
@@ -114,7 +163,7 @@ const SLogin = () => {
                  name="psw"
                  value={state.psw}
                  onChange={(e)=>{
-                  dispatch(addMatNo({mat_no: e.target.value}))
+                  // dispatch(addMatNo({mat_no: e.target.value}))
                   handleInputChange(e)
                  }}
                  required

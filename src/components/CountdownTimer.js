@@ -5,27 +5,31 @@ import { updateTimeLeft } from '../rtkSlices/stuexSlice';
 
 const CountdownTimer = ({ timeLimit, onTimeExpired }) => {
   const dispatch = useDispatch()
-  const {setTimeLeft} = useContext(AuthContext)
+  const {setTimeLeft1, posts} = useContext(AuthContext)
   const [timeRemaining, setTimeRemaining] = useState(timeLimit);
+  
   const [shouldAlert, setShouldAlert] = useState(true)
 
   
   
   useEffect(() => {
+    let aTime = timeLimit
     let timerId
     if (timeRemaining > 0) {
       setShouldAlert(true)
       timerId = setTimeout(async() => {
-        await setTimeLeft(0)
-        await setTimeLeft(timeRemaining-1)
-        await setTimeRemaining((prevTimer) => prevTimer - 1);
+        setTimeRemaining((prevTimer) => prevTimer - 1);
+        posts.current = timeRemaining
+        // console.log(timeRemaining) //<== 
         // setTimeLeft((prevTimer) => prevTimer - 1)
         
       }, 1000);
     } else {
+      posts.current = 0;
       if(shouldAlert){
         alert('Your Time is Up!')
       }
+
       setTimeRemaining(timeRemaining)
       dispatch(updateTimeLeft(timeRemaining))
       onTimeExpired();
