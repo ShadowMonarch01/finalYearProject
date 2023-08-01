@@ -37,7 +37,7 @@ const Courses =()=> {
       }
   return (
     <div className='viewScreen'>
-        <div className='flex-col bg-slate-500 w-full'>
+        <div className='flex-col w-full'>
             <h1 className='mt-4 ml-10'>Courses</h1>
             {
                 admDet.courses.map((item,index)=>{
